@@ -1,0 +1,34 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div>
+        <h1>Create Account:</h1>
+        <form action="Registering" method="post">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName">
+            <span asp-validation-for="FirstName"></span>
+            <br>
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName">
+            <span asp-validation-for="LastName"></span>
+            <br>
+            <label asp-for="Email"></label>
+            <input asp-for="Email">
+            <span asp-validation-for="Email"></span>
+            <br>
+            <label asp-for="Password"></label>
+            <input asp-for="Password">
+            <span asp-validation-for="Password"></span>
+            <br>
+            <label asp-for="ConfirmPassword"></label>
+            <input asp-for="ConfirmPassword">
+            <span asp-validation-for="ConfirmPassword"></span>
+            <br>
+            <input type="submit" value="Create Account!">
+        </form>
+    </div>
+</div>

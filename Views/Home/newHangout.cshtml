@@ -1,0 +1,30 @@
+@model Hangout
+<div class="container">
+    <div class="row"><h1>Plan your Hangout </h1><h3><a href="@ViewBag.CurrentUser">Dashboard</a></h3><form asp-action="Logout" method="post"><input type="submit" value="Logout"></form></div>
+    <div class="row">
+        <form action="makeHangout" method="post">
+            <label asp-for="Pastime"></label>
+            <input asp-for="Pastime">
+            <span asp-validation-for="Pastime"></span>
+            <br>
+            <label asp-for="Duration"></label>
+            <input asp-for="Duration">
+            <select name="Unit" asp-for="Unit">
+                <option value="Hours">Hours</option>
+                <option value="Minutes">Minutes</option>
+                <option value="Days">Days</option>
+            </select>
+            <br>
+            <label asp-for="DateTime"></label>
+            <input asp-for="DateTime">
+            <span asp-validation-for="DateTime"></span>
+            <br>
+            <label asp-for="Description"></label>
+            <input asp-for="Description">
+            <span asp-validation-for="Description"></span>
+            <br>
+            <input type="hidden" name="CreatorId" value="@ViewBag.CurrentUser">
+            <input type="submit" value="Create Hangout!">
+        </form>
+    </div>
+</div>

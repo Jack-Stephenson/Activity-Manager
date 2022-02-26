@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row">
+        <h1>@ViewBag.Hangout.Pastime</h1>
+        <h3><a asp-action="Dashboard">Dashboard</a></h3>
+        <form asp-action="Logout" method="post"><input type="submit" value="Logout"></form>
+    </div>
+    <div class="row">
+        @{
+            if (ViewBag.CurrentUserId == @ViewBag.Hangout.CreatorId)
+            {
+                <form asp-action="Delete" asp-route-hid="@ViewBag.Hangout.HangoutId" method="post"><input type="submit" value="Delete"></form>
+            }
+            else
+            {
+                if(ViewBag.HasAttendees)
+                {
+                    foreach(Attendance a in ViewBag.Attendees.Hangouts)
+                    {
+                        if(@a.Hangout.HangoutId == @ViewBag.Hangout.HangoutId)
+                        {
+                            <form action="Leave" method="post"><input type="hidden" name="HangoutId" value="@ViewBag.Hangout.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Leave"></form>
+                        }
+                        else
+                        {
+                            <form action="Join" method="post"><input type="hidden" name="HangoutId" value="@ViewBag.Hangout.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Join"></form>
+                        }
+                    }
+                }
+                else
+                {
+                    <form action="Join" method="post"><input type="hidden" name="HangoutId" value="@ViewBag.Hangout.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Join"></form>
+                }
+            }
+        }
+    </div>
+    <div class="row">
+        <h3>Event Coordinator: @{
+                foreach (User u in ViewBag.Users)
+                {
+                    if (u.UserId == @ViewBag.Hangout.CreatorId)
+                    {
+                        @u.FirstName
+                    }
+                }
+            }</h3>
+        <hr>
+        <h3>Description:</h3>
+        <hr>
+        <p>@ViewBag.Hangout.Description</p>
+        <hr>
+        <h3>Participants:</h3>
+        <hr>
+        <ul>
+            @{
+                foreach(Attendance p in ViewBag.Hangout.Participants)
+                {
+                    <li>@p.User.FirstName</li>
+                }
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row"><h1>Dojo Activity Center</h1><form asp-action="Logout" method="post"><input type="submit" value="Logout"></form></div>
+    <br>
+    <div class="row">
+        <table>
+            <tr>
+                <th>Activity</th>
+                <th>Date and Time</th>
+                <th>Duration</th>
+                <th>Event Coordinator</th>
+                <th>No. of Participants</th>
+                <th>Actions</th>
+            </tr>
+            @{
+                foreach (Hangout h in ViewBag.AllHangouts)
+                {
+                    DateTime current = DateTime.Now;
+                    DateTime date = @h.DateTime;
+                    int result = DateTime.Compare(current, date);
+                    if (result>0)
+                    {
+                        
+                    }
+                    else {
+                        <tr>
+                        <td><a href="HangoutDetails/@h.HangoutId">@h.Pastime</a></td>
+                        <td>@h.DateTime</td>
+                        <td>@{
+                                if(@h.Duration != null)
+                                {
+                                    @h.Duration @h.Unit
+                                }
+                            }</td>
+                        <td>
+                            @{
+                                foreach (User u in ViewBag.AllUsers)
+                                {
+                                    if(@h.CreatorId == @u.UserId)
+                                    {
+                                        @u.FirstName
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                int count = 0;
+                                foreach (Attendance a in ViewBag.HangoutCounts)
+                                {
+                                    if (@a.HangoutId == @h.HangoutId)
+                                    {
+                                        count++;
+                                    }
+                                }
+                                @count
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if(ViewBag.CurrentUserId == @h.CreatorId)
+                                {
+                                    <form action="Delete/@h.HangoutId" method="post"><input type="submit" value="Delete"></form>
+                                }
+                                else
+                                {
+                                    if(ViewBag.HasAttendees)
+                                    {
+                                        foreach (Attendance a in ViewBag.Attendees.Hangouts)
+                                        {
+                                            if(@a.Hangout.HangoutId == @h.HangoutId)
+                                            {
+                                                <form action="Leave" method="post"><input type="hidden" name="HangoutId" value="@h.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Leave"></form>
+                                            }
+                                            else
+                                            {
+                                                <form action="Join" method="post"><input type="hidden" name="HangoutId" value="@h.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Join"></form>
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        <form action="Join" method="post"><input type="hidden" name="HangoutId" value="@h.HangoutId"><input type="hidden" name="UserId" value="@ViewBag.CurrentUserId"><input type="submit" value="Join"></form>
+                                    }
+                                }
+                            }
+                        </td>
+                    </tr>
+                    }
+                }
+            }
+        </table>
+        <button><a href="newHangout">Add an Activity!</a></button>
+    </div>
+</div>
